@@ -1,73 +1,34 @@
-class CartService {
-  constructor() {
-    const beerCart = JSON.parse(localStorage.getItem('cart')) || [];
-    this.cart = beerCart;
-  }
-
-  addToCart(id) {
-    let isExist = this.cart.findIndex(
-      (cartItem) => cartItem.item.idDrink === id
-    );
+import React, { useState } from 'react';
+export default function useCartService(itemsToCart) {
+  const [cartItems, setCartItems] = useState(itemsToCart);
+  const addToCart = async (item) => {
+    let isExist = cartItems.findIndex((cartItem) => cartItem.item.idDrink === item.idDrink);
     if (isExist !== -1) {
-      this.cart[isExist].quantity += 1;
+      setCartItems((prevCartItems) => prevCartItems.map((cartItem, index) => (index === isExist ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem)));
     } else {
-      let newBeer = data.find((cartItem) => cartItem.idDrink === id);
       let newItem = {
         quantity: 1,
-        item: newBeer,
+        item: item,
       };
-      this.cart.push(newItem);
+      setCartItems(() => [...cartItems, newItem]);
     }
-    this.saveCart();
-  }
-
-  increaseToCart(id) {
-    let isExist = this.cart.findIndex(
-      (cartItem) => cartItem.item.idDrink === id
-    );
-    if (isExist !== -1) {
-      this.cart[isExist].quantity += 1;
-    }
-    this.saveCart();
-  }
-
-  removeFromCart(id) {
-    this.cart.filter((cartItem, index) => cartItem.item.idDrink !== id);
-    this.saveCart();
-  }
-
-  reduceFromCart(id) {
-    let isExist = this.cart.findIndex(
-      (cartItem) => cartItem?.item?.idDrink === id
-    );
-    if (isExist !== -1) {
-      this.cart[isExist].quantity === 0
-        ? 0
-        : (this.cart[isExist].quantity -= 1);
-    }
-    this.saveCart();
-  }
-
-  getItems() {
-    return this.cart;
-  }
-
-  cartTotal() {
-    return this.cart.reduce(
-      (acc, curr) => acc + curr.quantity * curr.item.price,
-      0
-    );
-  }
-
-  clearCart() {
-    this.cart = [];
-    this.saveCart();
-  }
-
-  saveCart() {
-    localStorage.setItem('cart', JSON.stringify(this.cart));
-  }
+  };
+  const removeFromCart = async (id) => {
+    let filteredItems = cartItems.filter((cartItem, index) => cartItem.item.idDrink !== id);
+    setCartItems(filteredItems);
+  };
+  const increaseToCart = async (id) => {
+    setCartItems((prevCartItems) => prevCartItems.map((cartItem) => (cartItem.item.idDrink === id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem)));
+  };
+  const reduceFromCart = async (id) => {
+    setCartItems((prevCartItems) => prevCartItems.map((cartItem) => (cartItem.item.idDrink === id ? { ...cartItem, quantity: cartItem.quantity === 0 ? 0 : cartItem.quantity - 1 } : cartItem)));
+  };
+  const cartTotal = () => {
+    let total = cartItems.reduce((acc, curr) => acc + curr.quantity * curr.item.price, 0);
+    return total;
+  };
+  const clearCart = () => {
+    setCartItems([]);
+  };
+  return {cartItems,setCartItems,addToCart,removeFromCart,reduceFromCart,increaseToCart,cartTotal,clearCart};
 }
-
-const cartService = new CartService();
-export default cartService;
