@@ -7,5 +7,16 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Shivaraj Umadi",
-  "license": "ISC"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivau1208/cartService.git"
+  },
+  "keywords": [
+    "cartservice"
+  ],
+  "bugs": {
+    "url": "https://github.com/shivau1208/cartService/issues"
+  },
+  "homepage": "https://github.com/shivau1208/cartService#readme"
 }
