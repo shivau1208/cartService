@@ -5,11 +5,11 @@ This React hook provides functionalities to manage cart operations such as addin
 ## Usage
 
 ```javascript
-const { cartItems, addToCart, removeFromCart, reduceFromCart, increaseToCart, cartTotal, clearCart } = useCartService(() => {
-  // Initialize cart from localStorage, or with an empty array if nothing is stored
-  const storedCart = localStorage.getItem("cartItems");
-  return storedCart ? JSON.parse(storedCart) : [];
-});
+// Initialize cart from localStorage, or with an empty array if nothing is stored
+const storedCart = localStorage.getItem("cartItems");
+const initalValue = storedCart ? JSON.parse(storedCart) : [];
+const { cartLength, cartItems, addToCart, removeFromCart, reduceFromCart, increaseToCart, cartTotal, clearCart } = useCartService(initalValue);
+
 // Updates the localstorage on change of cartItems
 useEffect(() => {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));

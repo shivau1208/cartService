@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 export default function useCartService(itemsToCart) {
-  const [cartItems, setCartItems] = useState(itemsToCart);
+  const [cartItems, setCartItems] = useState(itemsToCart || []);
+  const cartLength = cartItems?.length;
   const addToCart = async (item) => {
     let isExist = cartItems.findIndex((cartItem) => cartItem.item.idDrink === item.idDrink);
     if (isExist !== -1) {
@@ -30,5 +31,5 @@ export default function useCartService(itemsToCart) {
   const clearCart = () => {
     setCartItems([]);
   };
-  return {cartItems,setCartItems,addToCart,removeFromCart,reduceFromCart,increaseToCart,cartTotal,clearCart};
+  return {cartLength,cartItems,setCartItems,addToCart,removeFromCart,reduceFromCart,increaseToCart,cartTotal,clearCart};
 }
